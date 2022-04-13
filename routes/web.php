@@ -20,20 +20,15 @@ Route::get('/', function () {
 
 Route::get('posts/{post}', function ($slug) {
 
-
-
-    $path = __DIR__ . "/../resources/posts/{$slug}.html";
-
-    if (!file_exists($path)) {
+    if (!file_exists($path = __DIR__ . "/../resources/posts/{$slug}.html")) {
 
         return redirect('/');
     }
+    $post = cache()->remember("posts.{$slug}", 5, function () use ($path) {
 
-    $post = file_get_contents($path);
+        var_dump('get cached');
+        return file_get_contents($path);
+    });
 
-    return view('post', [
-
-        'post' => $post
-
-    ]);
+    return view('post', ['post' => $post]);
 })->where('post', '[A-z_\-]+');
