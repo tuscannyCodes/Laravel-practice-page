@@ -27,3 +27,7 @@ Route::get('posts/{post}', function ($slug) {
 
     ]);
 })->where('post', '[A-z_\-]+');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
